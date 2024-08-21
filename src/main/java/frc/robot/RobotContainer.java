@@ -5,14 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ArmCommands.ArmState;
 import frc.robot.commands.ArmCommands.ResetPositionArm;
-import frc.robot.commands.ElevatorCommands.ElevatorState;
 import frc.robot.commands.ElevatorCommands.ResetPositionElevator;
-import frc.robot.commands.IntegratedCommands.FloorPIckUp;
-import frc.robot.commands.IntegratedCommands.HomingSubSystems;
-import frc.robot.commands.IntegratedCommands.RobotSetStateParallel;
-import frc.robot.commands.IntegratedCommands.RobotSetStateSequential;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -55,7 +49,7 @@ public class RobotContainer {
     m_driverController.R2().onTrue(new InstantCommand(() -> m_SwerveModule.driveSetPower(2)));
     m_driverController.L2().onTrue(new InstantCommand(() -> m_SwerveModule.steeringSetPosition(Rotation2d.fromDegrees(90))));
     m_driverController.R1().onTrue(new InstantCommand(() -> m_SwerveModule.disableMotors()));
-    m_driverController.L1().onTrue(new InstantCommand(() -> m_SwerveModule.steeringSetPosition(Rotation2d.fromDegree))));
+    m_driverController.L1().onTrue(new InstantCommand(() -> m_SwerveModule.steeringSetPosition(Rotation2d.fromDegrees(0))));
 
 
     
