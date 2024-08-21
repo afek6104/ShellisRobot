@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -78,9 +80,12 @@ public final class Constants {
 
   public static class SwerveModule {
     public static final double P = 100;
+    public static final double steeringGearRatio = 150.0/7.0;
+    public static final double driveGearRatio = 6.75;
     public static final double CurrentLimits = 40;
     public static final boolean currentLimitEnbale = true;
     public static final double CurrentLimitsThreshold = 60;
     public static final double TimeThreshold = 0.1; 
+    public static final SensorDirectionValue cancoderInvert = SensorDirectionValue.CounterClockwise_Positive;
   }
 }

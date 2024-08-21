@@ -18,6 +18,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.RobotStateSubsystem;
 import frc.robot.subsystems.swerve.SwerveModule;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -52,7 +53,7 @@ public class RobotContainer {
     // m_driverController.L2().onFalse(new RobotSetStateParallel(m_elevator, ElevatorState.def, m_arm, ArmState.in, m_intake, 0));
 
     m_driverController.R2().onTrue(new InstantCommand(() -> m_SwerveModule.driveSetPower(2)));
-    m_driverController.L2().onTrue(new InstantCommand(() -> m_SwerveModule.steeringSetPosition(90)));
+    m_driverController.L2().onTrue(new InstantCommand(() -> m_SwerveModule.steeringSetPosition(Rotation2d.fromDegrees(90))));
     m_driverController.R1().onTrue(new InstantCommand(() -> m_SwerveModule.disableMotors()));
 
     
@@ -62,8 +63,8 @@ public class RobotContainer {
   }
 
   public void print(){
-    SmartDashboard.putNumber("Abs", m_SwerveModule.getAbsolutePosition());
-    SmartDashboard.putNumber("steerAngle", m_SwerveModule.getSteeringAngle());
+    SmartDashboard.putNumber("Abs", m_SwerveModule.getAbsolutePosition().getDegrees());
+    SmartDashboard.putNumber("steerAngle", m_SwerveModule.getSteeringAngle().getDegrees());
   }
 
 

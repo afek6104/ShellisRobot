@@ -1,5 +1,6 @@
 package frc.robot.subsystems.swerve;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -20,6 +21,7 @@ public class SwerveModule {
     private DutyCycleOut m_DutyCycleOut;
     private TalonFXConfiguration m_steeringconfiguration;
     private TalonFXConfiguration m_driveconfiguration;
+    public CANcoderConfiguration m_AbsuloteEncoderconfiguration;
 
 
     public SwerveModule(int IDdrive, int IDstirring, int IDcanCoder){
@@ -30,14 +32,17 @@ public class SwerveModule {
         m_DutyCycleOut = new DutyCycleOut(0);
         m_steeringconfiguration = new TalonFXConfiguration();
         m_driveconfiguration = new TalonFXConfiguration();
+        m_AbsuloteEncoderconfiguration = new CANcoderConfiguration();
 
-        m_steeringconfiguration.Slot0.withKP(Constants.SwerveModule.P);
+        m_driveconfiguration.Slot0.withKP(Constants.SwerveModule.P);
 
-        m_steeringconfiguration.Feedback.withSensorToMechanismRatio(150/7);
-        m_driveconfiguration.Feedback.withSensorToMechanismRatio(6.75);
+        m_AbsuloteEncoderconfiguration.MagnetSensor.SensorDirection = Constants.SwerveModule.cancoderInvert;
+
+        m_steeringconfiguration.Feedback.withSensorToMechanismRatio(Constants.SwerveModule.steeringGearRatio);
+        m_driveconfiguration.Feedback.withSensorToMechanismRatio(Constants.SwerveModule.driveGearRatio);
         
 
-        m_steeringconfiguration.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive);
+        m_steeringconfiguration.MotorOutput.withInverted(InvertedValue.Clockwise_Positive);
         m_driveconfiguration.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive);
 
         m_steeringconfiguration.withCurrentLimits(new CurrentLimitsConfigs()
@@ -58,21 +63,21 @@ public class SwerveModule {
         resetAbsulte();
     }
 
-    double offset = 0.374267578125;
+    Rotation2d offset = Rotation2d.fromRotations(0.374267578125);
     public void resetAbsulte(){
-        m_steering.setPosition(m_AbsuloteEncoder.getAbsolutePosition().getValue() - offset);
+        m_steering.setPosition(getAbsolutePosition().minus(offset).getRotations());
     }
 
-    public double getAbsolutePosition(){
-        return Rotation2d.fromRotations(m_AbsuloteEncoder.getAbsolutePosition().getValue()).getDegrees();
+    public Rotation2d getAbsolutePosition(){
+        return Rotation2d.fromRotations(m_AbsuloteEncoder.getAbsolutePosition().getValue());
     }
 
-    public double getSteeringAngle(){
-        return Rotation2d.fromRotations(steeringRotationsToUnits(m_steering.getPosition().getValue())).getDegrees();
+    public Rotation2d getSteeringAngle(){
+        return Rotation2d.fromRotations(m_steering.getPosition().getValue());
     }
     
-    public void steeringSetPosition(double position){
-        m_steering.setControl(m_PositionVoltage.withPosition(steeringUnitsToRotations(position)));
+    public void steeringSetPosition(Rotation2d position){
+        m_steering.setControl(m_PositionVoltage.withPosition((position.getRotations())));
     }
 
     double maxVelocity = 4.7;
@@ -80,26 +85,10 @@ public class SwerveModule {
         m_drive.setControl(m_DutyCycleOut.withOutput(velocity/maxVelocity));
     }
     
-    public void setModuleState(double position, double velocity){
+    public void setModuleState(Rotation2d position, double velocity){
         steeringSetPosition(position);
         driveSetPower(velocity);
     }
-
-    private double driveRotationsToUnits(double rotation){
-        return rotation * 0.0363728 * Math.PI;
-    }
-    
-    private double driveUnitsToRotations(double meter){
-        return meter / (0.0363728 * Math.PI);
-    }
-
-    private double steeringRotationsToUnits(double rotation){
-        return rotation * 360;
-      }
-    
-      private double steeringUnitsToRotations(double angle){
-        return angle / 360;
-      }
 
     public void disableMotors(){
         m_drive.disable();
