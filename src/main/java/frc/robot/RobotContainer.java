@@ -13,6 +13,9 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.RobotStateSubsystem;
 import frc.robot.subsystems.swerve.SwerveModule;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -34,8 +37,12 @@ public class RobotContainer {
       Arm m_arm = Arm.getInstance();
       Intake m_intake = Intake.getInstance();
       SwerveModule m_SwerveModule = new SwerveModule(10, 11, 12);
+      Translation2d a = new Translation2d(0, 0);
+      ChassisSpeeds b = new ChassisSpeeds();
+      SwerveDriveKinematics c = new SwerveDriveKinematics(null);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    c.toSwerveModuleStates(b);
     // m_driverController.triangle().onTrue(new RobotSetStateParallel(m_elevator, ElevatorState.def, m_arm, ArmState.amp, m_intake, 0.5));
     // m_driverController.circle().onTrue(new RobotSetStateParallel(m_elevator, ElevatorState.floor, m_arm, ArmState.in, m_intake, 0));
     // m_driverController.R1().onTrue(new HomingSubSystems(m_elevator, m_arm, m_intake));
