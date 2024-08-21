@@ -34,7 +34,7 @@ public class SwerveModule {
         m_driveconfiguration = new TalonFXConfiguration();
         m_AbsuloteEncoderconfiguration = new CANcoderConfiguration();
 
-        m_driveconfiguration.Slot0.withKP(Constants.SwerveModule.P);
+        m_steeringconfiguration.Slot0.withKP(Constants.SwerveModule.P);
 
         m_AbsuloteEncoderconfiguration.MagnetSensor.SensorDirection = Constants.SwerveModule.cancoderInvert;
 
@@ -63,7 +63,7 @@ public class SwerveModule {
         resetAbsulte();
     }
 
-    Rotation2d offset = Rotation2d.fromRotations(0.374267578125);
+    Rotation2d offset = Rotation2d.fromDegrees(-136.845703125);
     public void resetAbsulte(){
         m_steering.setPosition(getAbsolutePosition().minus(offset).getRotations());
     }

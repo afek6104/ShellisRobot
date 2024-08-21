@@ -55,6 +55,8 @@ public class RobotContainer {
     m_driverController.R2().onTrue(new InstantCommand(() -> m_SwerveModule.driveSetPower(2)));
     m_driverController.L2().onTrue(new InstantCommand(() -> m_SwerveModule.steeringSetPosition(Rotation2d.fromDegrees(90))));
     m_driverController.R1().onTrue(new InstantCommand(() -> m_SwerveModule.disableMotors()));
+    m_driverController.L1().onTrue(new InstantCommand(() -> m_SwerveModule.steeringSetPosition(Rotation2d.fromDegree))));
+
 
     
     // m_driverController.cross().onTrue(new ResetPositionElevator(elevator, 0));
